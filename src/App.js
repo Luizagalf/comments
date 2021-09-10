@@ -1,25 +1,85 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+export default class App extends React.Component {
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  constructor(props) {
+    super(props);
+      this.state = {
+        allComments: [],
+        comment: "",
+    };
+    }
+  
+    componentDidMount() {
+      if (localStorage.getItem("state")) {
+        this.setState({ ...JSON.parse(localStorage.getItem("state")) })
+      }
+    }
+
+    min = 1;
+    max = 300;
+  
+    addNewComment = () => {
+      this.setState({
+        allComments: [
+          ...this.state.allComments,
+          {
+            id: Math.round(this.min + (Math.random() * (this.max - this.min))),
+            comment: this.state.comment,
+          }
+        ],
+          comment: ""
+      }, () => localStorage.setItem("state", JSON.stringify(this.state)))
+    }
+  
+    removeComment = (id) => {
+      this.setState({
+        allComments: this.state.allComments.filter(comment => comment.id !== id)
+      }, () => localStorage.setItem("state", JSON.stringify(this.state)))
+    }
+  
+    handleChange = (val) => {
+      this.setState({
+          ...this.state,
+          [val.target.name]: val.target.value,
+      })
+    }
+  
+    render() {
+      return (
+        <div>
+
+          <div className="form">
+            <h4>Your comment</h4>
+            <input
+              name="comment"
+              placeholder="Comment..."
+              value={this.state.comment}
+              onChange={this.handleChange}/>
+            <button onClick={this.addNewComment} className="btn mainbutton">Add Comment</button>
+          </div>
+          <div className="row">
+
+          {this.state.allComments.reverse().map((comment, i) =>
+          <>
+            { (i==0)
+              ? 
+              <div className="comment newcomment" key={comment.id}>
+              <span>{comment.comment}</span>
+              <button onClick={this.removeComment.bind(null, comment.id)} className="btn clearbutton">Delete</button>
+              </div>
+              :
+              <div className="comment" key={comment.id}>
+              <span>{comment.comment}</span>
+              <button onClick={this.removeComment.bind(null, comment.id)} className="btn clearbutton">Delete</button>
+              </div>
+            }
+            </>
+          )}
+                  </div>
+
+        </div>
+      )
+    }
 }
 
-export default App;
