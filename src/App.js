@@ -51,15 +51,15 @@ export default class App extends React.Component {
 
           <div className="form">
             <h4>Your comment</h4>
-            <input
+            <textarea
               name="comment"
               placeholder="Comment..."
               value={this.state.comment}
-              onChange={this.handleChange}/>
+              onChange={this.handleChange}></textarea>
             <button onClick={this.addNewComment} className="btn mainbutton">Add Comment</button>
           </div>
+          
           <div className="row">
-
           {this.state.allComments.reverse().map((comment, i) =>
           <>
             { (i==0)
@@ -76,8 +76,7 @@ export default class App extends React.Component {
             }
             </>
           )}
-                  </div>
-
+          </div>
         </div>
       )
     }
