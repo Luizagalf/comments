@@ -8,12 +8,17 @@ export default class App extends React.Component {
         allComments: [],
         comment: "",
     };
+    this.removeComment = this.removeComment.bind(this);
     }
   
     componentDidMount() {
       if (localStorage.getItem("state")) {
         this.setState({ ...JSON.parse(localStorage.getItem("state")) })
       }
+    }
+
+    localSetItem = () => {
+      localStorage.setItem("state", JSON.stringify(this.state));
     }
 
     min = 1;
@@ -29,13 +34,13 @@ export default class App extends React.Component {
           }
         ],
           comment: ""
-      }, () => localStorage.setItem("state", JSON.stringify(this.state)))
+      }, () => this.localSetItem())
     }
   
     removeComment = (id) => {
       this.setState({
         allComments: this.state.allComments.filter(comment => comment.id !== id)
-      }, () => localStorage.setItem("state", JSON.stringify(this.state)))
+      }, () => this.localSetItem())
     }
   
     handleChange = (val) => {
@@ -66,12 +71,12 @@ export default class App extends React.Component {
               ? 
               <div className="comment newcomment" key={comment.id}>
               <span>{comment.comment}</span>
-              <button onClick={this.removeComment.bind(null, comment.id)} className="btn clearbutton">Delete</button>
+              <button onClick={() => this.removeComment(comment.id)} className="btn clearbutton">Delete</button>
               </div>
               :
               <div className="comment" key={comment.id}>
               <span>{comment.comment}</span>
-              <button onClick={this.removeComment.bind(null, comment.id)} className="btn clearbutton">Delete</button>
+              <button onClick={() => this.removeComment(comment.id)} className="btn clearbutton">Delete</button>
               </div>
             }
             </>
