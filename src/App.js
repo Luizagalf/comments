@@ -8,7 +8,6 @@ export default class App extends React.Component {
         allComments: [],
         comment: "",
     };
-    this.removeComment = this.removeComment.bind(this);
     }
   
     componentDidMount() {
