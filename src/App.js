@@ -26,11 +26,11 @@ export default class App extends React.Component {
     addNewComment = () => {
       this.setState({
         allComments: [
-          ...this.state.allComments,
           {
             id: Math.round(this.min + (Math.random() * (this.max - this.min))),
             comment: this.state.comment,
-          }
+          },
+          ...this.state.allComments
         ],
           comment: ""
       }, () => this.localSetItem())
@@ -64,7 +64,7 @@ export default class App extends React.Component {
           </div>
           
           <div className="row">
-          {this.state.allComments.reverse().map((comment, i) =>
+          {this.state.allComments.map((comment, i) =>
           <>
             { (i==0)
               ? 
